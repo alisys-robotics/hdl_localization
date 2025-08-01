@@ -96,12 +96,14 @@ private:
     std::string ndt_neighbor_search_method = this->get_parameter("ndt_neighbor_search_method").as_string();
     double ndt_neighbor_search_radius = this->get_parameter("ndt_neighbor_search_radius").as_double();
     double ndt_resolution = this->get_parameter("ndt_resolution").as_double();
+    int num_threads = this->get_parameter("num_threads").as_int();
 
     if(reg_method == "NDT_OMP") {
       RCLCPP_INFO(this->get_logger(), "NDT_OMP is selected");
       pclomp::NormalDistributionsTransform<PointT, PointT>::Ptr ndt(new pclomp::NormalDistributionsTransform<PointT, PointT>());
       ndt->setTransformationEpsilon(0.01);
       ndt->setResolution(ndt_resolution);
+      if (num_threads>0) ndt->setNumThreads(num_threads);
       if (ndt_neighbor_search_method == "DIRECT1") {
         RCLCPP_INFO(this->get_logger(), "search_method DIRECT1 is selected");
         ndt->setNeighborhoodSearchMethod(pclomp::DIRECT1);
@@ -164,6 +166,7 @@ private:
     this->declare_parameter("init_ori_y", 0.0);
     this->declare_parameter("init_ori_z", 0.0);
     this->declare_parameter("cool_time_duration", 0.5);
+    this->declare_parameter("num_threads", 0);
 
     double downsample_resolution = this->get_parameter("downsample_resolution").as_double();
     std::shared_ptr<pcl::VoxelGrid<PointT>> voxelgrid(new pcl::VoxelGrid<PointT>());

@@ -15,6 +15,7 @@ hdl_localization:
     ndt_neighbor_search_radius: 2.0
     ndt_resolution: 1.0
     downsample_resolution: 0.1
+    num_threads: 0 # Number of threads to use (new variable). If 0, it uses all the threads
     # if "specify_init_pose" is true, pose estimator will be initialized with the following params.
     # otherwise, you need to input an initial pose with "2D Pose Estimate" on rviz"
     specify_init_pose: true
