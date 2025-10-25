@@ -245,7 +245,8 @@ private:
 
     std::lock_guard<std::mutex> estimator_lock(pose_estimator_mutex);
     if(!pose_estimator) {
-      RCLCPP_ERROR(this->get_logger(), "waiting for initial pose input!!");
+      auto& clk = *this->get_clock();
+      RCLCPP_WARN_THROTTLE(this->get_logger(), clk, 5000, "Waiting for initial pose input...");
       return;
     }
     Eigen::Matrix4f before = pose_estimator->matrix();
